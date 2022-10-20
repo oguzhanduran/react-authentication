@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactSlice";
-import { nanoid } from "@reduxjs/toolkit";
+import { updateContact } from "../../redux/contactSlice";
+import { useNavigate } from "react-router-dom";
 
-function Form() {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+function EditForm({ contact }) {
+  const [name, setName] = useState(contact.name);
+  const [number, setNumber] = useState(contact.phone_number);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const names = name.split(",");
-    // const data = names.map((name) => ({ id: nanoid(), name }));
-
     if (!name || !number) return false;
-    dispatch(addContact({ id: nanoid(), name, phone_number: number }));
 
-    setName("");
-    setNumber("");
+    dispatch(
+      updateContact({ id: contact.id, changes: { name, phone_number: number } })
+    );
+
+    navigate("/");
   };
-  //   Biz direk entities altından şu id'li elemanı bize ver diyebileceğiz.
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -36,11 +36,11 @@ function Form() {
           onChange={(e) => setNumber(e.target.value)}
         />
         <div className="btn">
-          <button type="submit">add</button>
+          <button type="submit">Update</button>
         </div>
       </form>
     </div>
   );
 }
 
-export default Form;
+export default EditForm;

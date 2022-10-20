@@ -3,16 +3,29 @@ import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 export const contactAdaptor = createEntityAdapter();
 const initialState = contactAdaptor.getInitialState();
 
+export const contactSelectors = contactAdaptor.getSelectors(
+  (state) => state.contacts
+);
+
 const contactSlice = createSlice({
   name: "contacts",
   initialState,
   reducers: {
     addContact: contactAdaptor.addOne,
     addContacts: contactAdaptor.addMany,
+    deleteContact: contactAdaptor.removeOne,
+    deleteAllContacts: contactAdaptor.removeAll,
+    updateContact: contactAdaptor.updateOne,
   },
 });
 
-export const { addContact, addContacts } = contactSlice.actions;
+export const {
+  addContact,
+  addContacts,
+  deleteContact,
+  deleteAllContacts,
+  updateContact,
+} = contactSlice.actions;
 export default contactSlice.reducer;
 
 // Burda state'imiz oluştururken ve reducer'larımızı tanımlarken bir önceki bölümde yaptıklarımızdan farklı işlemler yapacağız. Redux üzerindeki farklı bir yapıyı göüyor olacağız. Data normalizing denen bir yapı var.
